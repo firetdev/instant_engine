@@ -1,5 +1,36 @@
 #include "../engine/engine.hpp"
 
+class Player : public Entity {
+public:
+    Player(int id, const std::string& name)
+            : Entity(id, name) {}
+    
+    void update() override {
+        std::cout << "yo";
+    }
+
+    void setup() override {
+        // Create components
+        auto transform = std::make_shared<Transform>();
+        transform->position = {100, 100};
+        transform->scale = {1.0f, 1.0f};
+
+        auto sprite = std::make_shared<Sprite>("player.png");
+        
+        auto collider = std::make_shared<CollisionBox>();
+        collider->size = {32, 32}; // Example size
+        collider->isPhysical = true;
+
+        // Add them to the entity instance
+        addComponent(transform);
+        addComponent(sprite);
+        addComponent(collider);
+
+        // Can also run custom Player-specific logic here
+        std::cout << "Player entity has been initialized.\n";
+    }
+};
+
 int main() {
     // 1. Create the GameManager
     GameManager game(800, 600, "My Game Engine");
@@ -7,17 +38,8 @@ int main() {
 
     // 2. Create and add entities
     try {
-        auto player = std::make_shared<Entity>(1, "Player");
-
-        auto playerTransform = std::make_shared<Transform>();
-        playerTransform->position = {400, 300}; // Center of the screen
-        playerTransform->scale = {1, 1};
-
-        // Make sure "player.png" exists!
-        auto playerSprite = std::make_shared<Sprite>("player.png");
-        
-        player->addComponent(playerTransform);
-        player->addComponent(playerSprite);
+        auto player = std::make_shared<Player>(1, "Player");
+        player->setup();
         game.addEntity(player);
     }
     catch (const std::exception& e) {
