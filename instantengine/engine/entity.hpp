@@ -3,6 +3,7 @@
 #pragma once
 
 #include "components/basecomponent.hpp"
+#include "instant.hpp"
 
 #include <vector>
 #include <string>
