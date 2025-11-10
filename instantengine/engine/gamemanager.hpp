@@ -1,3 +1,5 @@
+// Game manager class
+
 #pragma once
 
 #include "entity.hpp"
