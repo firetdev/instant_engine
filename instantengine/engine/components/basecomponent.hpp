@@ -1,3 +1,5 @@
+// Base component struct
+
 #pragma once
 
 class BaseComponent {

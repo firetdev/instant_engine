@@ -1,6 +1,8 @@
+// Sprite struct
+
 #pragma once
 
-#include "../engine.hpp"
+#include "../instant.hpp"
 #include "basecomponent.hpp"
 
 #include <SFML/Graphics.hpp>

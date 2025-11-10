@@ -1,10 +1,4 @@
-#include "engine/gamemanager.hpp"
-#include "engine/entity.hpp"
-#include "engine/components/transform.hpp"
-#include "engine/components/sprite.hpp"
-
-#include <SFML/Graphics.hpp>
-#include <memory>
+#include "../engine/engine.hpp"
 
 int main() {
     // 1. Create the GameManager

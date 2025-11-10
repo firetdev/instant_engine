@@ -1,6 +1,8 @@
+// Transform struct
+
 #pragma once
 
-#include "../engine.hpp"
+#include "../instant.hpp"
 #include "basecomponent.hpp"
 
 struct Transform : public BaseComponent {

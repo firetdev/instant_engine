@@ -1,4 +1,4 @@
-// Render System class
+// RenderSystem class
 
 #pragma once
 
