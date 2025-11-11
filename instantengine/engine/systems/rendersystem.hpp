@@ -5,12 +5,13 @@
 #include "../entity.hpp"
 #include "../components/sprite.hpp"
 #include "../components/transform.hpp"
+#include "basesystem.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
 
-class RenderSystem {
+class RenderSystem : public BaseSystem {
 public:
     // Update function: render all entities with both Transform and Sprite
     void update(const std::vector<std::shared_ptr<Entity>>& entities, sf::RenderWindow& window) {

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "entity.hpp"
-#include "components/sprite.hpp"
 #include "systems/rendersystem.hpp"
 
 #include <SFML/Graphics.hpp>
