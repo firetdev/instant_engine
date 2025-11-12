@@ -1,37 +1,39 @@
-// Game manager class
+// GameManager class
 
 #pragma once
 
-#include "entity.hpp"
-#include "systems/rendersystem.hpp"
+#include "scene.hpp"
 
 #include <SFML/Graphics.hpp>
-#include <vector>
 #include <memory>
 #include <string>
+#include <map>
+#include <functional>
 
 class GameManager {
 public:
-    // Constructor: sets up a non-resizable window
     GameManager(unsigned int width, unsigned int height, const std::string& title)
-        : window(sf::VideoMode(sf::Vector2u(width, height)), title, sf::Style::Titlebar | sf::Style::Close) {}
-
-    // Add an entity to the game
-    void addEntity(std::shared_ptr<Entity> entity) {
-        entities.push_back(entity);
-    }
+        : m_window(sf::VideoMode(sf::Vector2u(width, height)), title, sf::Style::Titlebar | sf::Style::Close) {}
     
-    // Update all systems
-    void update() {
-        renderer.update(entities, window);
+    void update();  // Update and render
+
+    // The new way to change scenes
+    void changeScene(const std::string& sceneName);
+
+    // Register a scene
+    template<typename T>
+    void registerScene(const std::string& sceneName) {
+        m_sceneRegistry[sceneName] = []() {
+            return std::make_shared<T>();
+        };
     }
 
-    // Accessors
-    sf::RenderWindow& getWindow() { return window; }
-    std::vector<std::shared_ptr<Entity>>& getEntities() { return entities; }
+    sf::RenderWindow& getWindow() { return m_window; }
 
 private:
-    sf::RenderWindow window;
-    std::vector<std::shared_ptr<Entity>> entities;
-    RenderSystem renderer;
+    sf::RenderWindow m_window;
+    
+    std::shared_ptr<Scene> m_currentScene;     // The current scene
+    // The registry that knows how to create all other scenes
+    std::map<std::string, std::function<std::shared_ptr<Scene>()>> m_sceneRegistry;
 };

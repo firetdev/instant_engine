@@ -2,7 +2,12 @@
 
 #pragma once
 
+#include "../entity.hpp"
+
+#include <vector>
+#include <memory>
+
 class BaseSystem {
-private:
-    int id;
+public:
+    virtual void update(std::vector<std::shared_ptr<Entity>>);
 };

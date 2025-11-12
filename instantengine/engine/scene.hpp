@@ -31,8 +31,7 @@ public:
             system->update(m_entities); // Pass the entities
         }
         
-        // Run custom, scene-specific logic (e.g., check for win condition)
-        onUpdate();
+        onUpdate();  // Call custom scene logic
     }
     
     void render(sf::RenderWindow& window) {

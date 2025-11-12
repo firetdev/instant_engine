@@ -31,6 +31,17 @@ public:
     }
 };
 
+class MainScene : public Scene {
+public:
+    MainScene() : Scene("Main Scene") {}
+    
+    void setup() override {
+        auto player = std::make_shared<Player>(1, "Player");
+        player->setup();
+        addEntity(player);
+    }
+};
+
 int main() {
     // 1. Create the GameManager
     GameManager game(800, 600, "My Game Engine");
@@ -38,9 +49,9 @@ int main() {
 
     // 2. Create and add entities
     try {
-        auto player = std::make_shared<Player>(1, "Player");
-        player->setup();
-        game.addEntity(player);
+        game.registerScene<MainScene>("Main");
+        game.changeScene("Main");
+        game.update();
     }
     catch (const std::exception& e) {
         // Handle texture loading failure
