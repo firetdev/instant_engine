@@ -1,7 +1,5 @@
 // GameManager implementation
 
-#pragma once
-
 #include "gamemanager.hpp"
 
 void GameManager::changeScene(const std::string& sceneName) {
