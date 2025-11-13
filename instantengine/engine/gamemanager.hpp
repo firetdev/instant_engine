@@ -3,6 +3,7 @@
 #pragma once
 
 #include "scene.hpp"
+#include "systems/inputsystem.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -32,7 +33,8 @@ public:
 
 private:
     sf::RenderWindow m_window;
-    
+    InputSystem inputSystem;
+
     std::shared_ptr<Scene> m_currentScene;     // The current scene
     // The registry that knows how to create all other scenes
     std::map<std::string, std::function<std::shared_ptr<Scene>()>> m_sceneRegistry;

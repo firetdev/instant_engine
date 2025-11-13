@@ -62,23 +62,23 @@ int main() {
     // 3. Run the main game loop
     while (window.isOpen()) {
         // 4a. Process window events
-        while (const std::optional event = window.pollEvent()) {
+        /*while (const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>())
                 window.close();
 
             else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
                 if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
                     window.close();
-        }
+        }*/
 
         // 4b. Clear the window
-        window.clear(sf::Color::Black); // Clear with a black background
+        //window.clear(sf::Color::Black); // Clear with a black background
 
         // 4c. Call game update (which calls RenderSystem::update)
         game.update();
 
         // 4d. Display the window
-        window.display();
+        //window.display();
     }
     
     return 0;

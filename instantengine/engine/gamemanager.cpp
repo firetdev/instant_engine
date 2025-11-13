@@ -16,6 +16,10 @@ void GameManager::changeScene(const std::string& sceneName) {
 }
 
 void GameManager::update() {
+    // Check events
+    inputSystem.update(m_window);
+    
+    // Update scenes
     if (m_currentScene) {
         m_currentScene->update();
     }
