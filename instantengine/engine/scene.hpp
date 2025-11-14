@@ -27,6 +27,9 @@ public:
     
     // Update all systems
     void update() {
+        for (auto& entity : m_entities) {
+            entity->update();
+        }
         for (auto& system : m_logicSystems) {
             system->update(m_entities); // Pass the entities
         }

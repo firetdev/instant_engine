@@ -6,7 +6,18 @@ public:
             : Entity(id, name) {}
     
     void update() override {
-        std::cout << "yo";
+        if (Input::inputs["w"]) {
+            getComponents<Transform>()[0]->position.y -= 50;
+        }
+        if (Input::inputs["s"]) {
+            getComponents<Transform>()[0]->position.y += 50;
+        }
+        if (Input::inputs["a"]) {
+            getComponents<Transform>()[0]->position.x -= 50;
+        }
+        if (Input::inputs["d"]) {
+            getComponents<Transform>()[0]->position.x += 50;
+        }
     }
 
     void setup() override {
