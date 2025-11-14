@@ -14,12 +14,12 @@ void GameManager::changeScene(const std::string& sceneName) {
 }
 
 void GameManager::update() {
+    // Get delta time
+    sf::Time deltaTime = clock.restart();
+    Instant::delta = deltaTime.asSeconds();
+    
     // Check events
-    while (const std::optional event = m_window.pollEvent()) {
-        if (event->is<sf::Event::Closed>())
-            m_window.close();
-    }
-    Input::update();
+    Input::update(m_window);
     
     // Update scenes
     if (m_currentScene) {

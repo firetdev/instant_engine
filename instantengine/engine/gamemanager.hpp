@@ -33,6 +33,7 @@ public:
 
 private:
     sf::RenderWindow m_window;
+    sf::Clock clock;
 
     std::shared_ptr<Scene> m_currentScene;     // The current scene
     // The registry that knows how to create all other scenes

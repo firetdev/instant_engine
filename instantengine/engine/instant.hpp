@@ -7,6 +7,8 @@
 #include <cmath>
 
 namespace Instant {
+inline float delta;
+
 class Vector2 {
 public:
     float x;
