@@ -18,6 +18,11 @@ public:
         if (Input::inputs["d"]) {
             getComponents<Transform>()[0]->position.x += 100 * Instant::delta;
         }
+        
+        for (auto& e : getComponents<CollisionBox>()[0]->collidingWith) {
+            if (e.lock()->getName() == "Enemy")
+                std::cout << "Hi";
+        }
     }
 
     void setup() override {
@@ -30,7 +35,7 @@ public:
         
         auto collider = std::make_shared<CollisionBox>();
         collider->size = {32, 32}; // Example size
-        collider->isPhysical = true;
+        collider->isPhysical = false;
 
         // Add them to the entity instance
         addComponent(transform);
@@ -42,6 +47,48 @@ public:
     }
 };
 
+class Enemy : public Entity {
+public:
+    Enemy(int id, const std::string& name)
+            : Entity(id, name) {}
+    
+    void update() override {
+        if (Input::inputs["w"]) {
+            getComponents<Transform>()[0]->position.y += 100 * Instant::delta;
+        }
+        if (Input::inputs["s"]) {
+            getComponents<Transform>()[0]->position.y -= 100 * Instant::delta;
+        }
+        if (Input::inputs["a"]) {
+            getComponents<Transform>()[0]->position.x += 100 * Instant::delta;
+        }
+        if (Input::inputs["d"]) {
+            getComponents<Transform>()[0]->position.x -= 100 * Instant::delta;
+        }
+    }
+
+    void setup() override {
+        // Create components
+        auto transform = std::make_shared<Transform>();
+        transform->position = {100, 100};
+        transform->scale = {1.0f, 1.0f};
+
+        auto sprite = std::make_shared<Sprite>("player.png");
+        
+        auto collider = std::make_shared<CollisionBox>();
+        collider->size = {32, 32}; // Example size
+        collider->isPhysical = false;
+
+        // Add them to the entity instance
+        addComponent(transform);
+        addComponent(sprite);
+        addComponent(collider);
+
+        // Can also run custom Player-specific logic here
+        std::cout << "Enemy entity has been initialized.\n";
+    }
+};
+
 class MainScene : public Scene {
 public:
     MainScene() : Scene("Main Scene") {}
@@ -49,6 +96,9 @@ public:
     void setup() override {
         auto player = std::make_shared<Player>(1, "Player");
         addEntity(player);
+        auto enemy = std::make_shared<Enemy>(1, "Enemy");
+        addEntity(enemy);
+        addLogicSystem(std::make_shared<CollisionSystem>());
     }
 };
 

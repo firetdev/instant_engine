@@ -9,5 +9,7 @@
 
 class BaseSystem {
 public:
-    virtual void update(std::vector<std::shared_ptr<Entity>>);
+    virtual ~BaseSystem() = default; // Required for polymorphism
+
+    virtual void update(const std::vector<std::shared_ptr<Entity>>& entities) = 0;
 };

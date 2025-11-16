@@ -11,4 +11,6 @@ public:
     virtual ~BaseComponent() = default;
     
     std::weak_ptr<Entity> parent;
+    
+    std::shared_ptr<Entity> getParent() { return parent.lock(); }
 };
