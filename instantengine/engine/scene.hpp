@@ -22,6 +22,34 @@ public:
     // Add an entity to the game
     void addEntity(std::shared_ptr<Entity> entity) {
         entity->setup();
+        
+        // Make sure there are no repeated ids or names
+        int newId = entity->getId();
+        for (auto& e : m_entities)
+            newId = std::max(newId, e->getId() + 1);
+
+        entity->setId(newId);
+        
+        std::string baseName = entity->getName();
+        int nameNumber = 0;
+        
+        bool restart = true;
+        while (restart) {
+            restart = false;
+            std::string candidate = (nameNumber == 0 ? baseName : baseName + std::to_string(nameNumber));
+
+            for (auto& e : m_entities) {
+                if (candidate == e->getName()) {
+                    nameNumber++;
+                    restart = true;
+                    break;
+                }
+            }
+
+            if (!restart)
+                entity->setName(candidate);
+        }
+        
         m_entities.push_back(entity);
     }
     

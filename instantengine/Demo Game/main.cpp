@@ -48,7 +48,6 @@ public:
     
     void setup() override {
         auto player = std::make_shared<Player>(1, "Player");
-        player->setup();
         addEntity(player);
     }
 };
