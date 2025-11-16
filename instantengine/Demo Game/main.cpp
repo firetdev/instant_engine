@@ -21,7 +21,7 @@ public:
         
         for (auto& e : getComponents<CollisionBox>()[0]->collidingWith) {
             if (e.lock()->getName() == "Enemy")
-                std::cout << "Hi";
+                std::cout << "Colliding with enemy!\n";
         }
     }
 
@@ -34,7 +34,7 @@ public:
         auto sprite = std::make_shared<Sprite>("player.png");
         
         auto collider = std::make_shared<CollisionBox>();
-        collider->size = {32, 32}; // Example size
+        collider->size = {64, 64}; // Example size
         collider->isPhysical = false;
 
         // Add them to the entity instance
@@ -70,13 +70,13 @@ public:
     void setup() override {
         // Create components
         auto transform = std::make_shared<Transform>();
-        transform->position = {100, 100};
+        transform->position = {200, 200};
         transform->scale = {1.0f, 1.0f};
 
         auto sprite = std::make_shared<Sprite>("player.png");
         
         auto collider = std::make_shared<CollisionBox>();
-        collider->size = {32, 32}; // Example size
+        collider->size = {64, 64}; // Example size
         collider->isPhysical = false;
 
         // Add them to the entity instance
