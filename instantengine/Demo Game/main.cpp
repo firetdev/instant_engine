@@ -37,7 +37,7 @@ public:
         
         auto collider = std::make_shared<CollisionBox>();
         collider->size = {64, 64}; // Example size
-        collider->isPhysical = false;
+        collider->isPhysical = true;
         
         auto body = std::make_shared<CharacterBody>();
 
@@ -60,17 +60,17 @@ public:
     void update() override {
         getComponents<CharacterBody>()[0]->velocity.x = 0;
         getComponents<CharacterBody>()[0]->velocity.y = 0;
-        if (Input::inputs["w"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = 100 * Instant::delta;
-        }
-        if (Input::inputs["s"]) {
+        if (Input::inputs["Up"]) {
             getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
         }
-        if (Input::inputs["a"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
+        if (Input::inputs["Down"]) {
+            getComponents<CharacterBody>()[0]->velocity.y = 100 * Instant::delta;
         }
-        if (Input::inputs["d"]) {
+        if (Input::inputs["Left"]) {
             getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
+        }
+        if (Input::inputs["Right"]) {
+            getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
         }
     }
 
@@ -84,7 +84,7 @@ public:
         
         auto collider = std::make_shared<CollisionBox>();
         collider->size = {64, 64}; // Example size
-        collider->isPhysical = false;
+        collider->isPhysical = true;
 
         auto body = std::make_shared<CharacterBody>();
         
