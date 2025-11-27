@@ -6,17 +6,19 @@ public:
             : Entity(id, name) {}
     
     void update() override {
+        getComponents<CharacterBody>()[0]->velocity.x = 0;
+        getComponents<CharacterBody>()[0]->velocity.y = 0;
         if (Input::inputs["w"]) {
-            getComponents<Transform>()[0]->position.y -= 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
         }
         if (Input::inputs["s"]) {
-            getComponents<Transform>()[0]->position.y += 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = 100 * Instant::delta;
         }
         if (Input::inputs["a"]) {
-            getComponents<Transform>()[0]->position.x -= 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
         }
         if (Input::inputs["d"]) {
-            getComponents<Transform>()[0]->position.x += 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
         }
         
         for (auto& e : getComponents<CollisionBox>()[0]->collidingWith) {
@@ -36,11 +38,14 @@ public:
         auto collider = std::make_shared<CollisionBox>();
         collider->size = {64, 64}; // Example size
         collider->isPhysical = false;
+        
+        auto body = std::make_shared<CharacterBody>();
 
         // Add them to the entity instance
         addComponent(transform);
         addComponent(sprite);
         addComponent(collider);
+        addComponent(body);
 
         // Can also run custom Player-specific logic here
         std::cout << "Player entity has been initialized.\n";
@@ -53,17 +58,19 @@ public:
             : Entity(id, name) {}
     
     void update() override {
+        getComponents<CharacterBody>()[0]->velocity.x = 0;
+        getComponents<CharacterBody>()[0]->velocity.y = 0;
         if (Input::inputs["w"]) {
-            getComponents<Transform>()[0]->position.y += 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = 100 * Instant::delta;
         }
         if (Input::inputs["s"]) {
-            getComponents<Transform>()[0]->position.y -= 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
         }
         if (Input::inputs["a"]) {
-            getComponents<Transform>()[0]->position.x += 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
         }
         if (Input::inputs["d"]) {
-            getComponents<Transform>()[0]->position.x -= 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
         }
     }
 
@@ -79,10 +86,13 @@ public:
         collider->size = {64, 64}; // Example size
         collider->isPhysical = false;
 
+        auto body = std::make_shared<CharacterBody>();
+        
         // Add them to the entity instance
         addComponent(transform);
         addComponent(sprite);
         addComponent(collider);
+        addComponent(body);
 
         // Can also run custom Player-specific logic here
         std::cout << "Enemy entity has been initialized.\n";
@@ -99,6 +109,7 @@ public:
         auto enemy = std::make_shared<Enemy>(1, "Enemy");
         addEntity(enemy);
         addLogicSystem(std::make_shared<CollisionSystem>());
+        addLogicSystem(std::make_shared<PhysicsSystem>());
     }
 };
 

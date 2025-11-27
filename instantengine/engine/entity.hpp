@@ -3,7 +3,6 @@
 #pragma once
 
 #include "components/basecomponent.hpp"
-#include "instant.hpp"
 
 #include <vector>
 #include <string>
@@ -18,7 +17,7 @@ public:
 
     template<typename T>
     std::vector<std::shared_ptr<T>> getComponents();  // Return a vector linking to the components
-
+    
     // Getters
     const std::string& getType() const { return type; }  // Return type
     const std::string& getName() const { return name; }  // Return name
