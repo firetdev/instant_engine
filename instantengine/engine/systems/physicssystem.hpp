@@ -1,6 +1,6 @@
 // Physics System class
 
-// TODO: Add "sliding": collisions only stop movement one the axis they're colliding on
+// TODO: Add dynamic gravity
 
 #pragma once
 
@@ -143,7 +143,6 @@ public:
     }
     
     void update(const std::vector<std::shared_ptr<Entity>>& entities) {
-        //
         struct ColliderInfo {
             std::shared_ptr<Entity> entity;
             std::shared_ptr<Transform> transform;
@@ -187,6 +186,12 @@ public:
 
             // Check if the cast succeeded. If it did, this is a CharacterBody.
             if (characterBodyA) {
+                // Update gravity
+                if (characterBodyA->dynamicGravity == false) {
+                    characterBodyA->gravity = Instant::gravity;
+                } else {
+                    // Body is using dynamic gravity--will need to add logic later
+                }
                 auto transformA = entityA->getComponents<Transform>();
                 if (transformA.empty()) continue;
                 std::shared_ptr<Transform> tA = transformA[0]; // Get the transform

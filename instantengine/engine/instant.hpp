@@ -54,4 +54,6 @@ public:
         std::cout << "Vector2(" << x << ", " << y << ")\n";
     }
 };
+
+inline Vector2 gravity = {0, 50};
 }

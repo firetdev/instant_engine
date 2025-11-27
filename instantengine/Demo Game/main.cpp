@@ -7,7 +7,10 @@ public:
     
     void update() override {
         getComponents<CharacterBody>()[0]->velocity.x = 0;
-        getComponents<CharacterBody>()[0]->velocity.y = 0;
+        //getComponents<CharacterBody>()[0]->velocity.y = 0;
+        
+        getComponents<CharacterBody>()[0]->applyGravity();
+        
         if (Input::inputs["w"]) {
             getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
         }
