@@ -230,6 +230,43 @@ public:
                 tA->position.x += characterBodyA->velocity.x * t_move;
                 tA->position.y += characterBodyA->velocity.y * t_move;
                 
+                // Kill velocity on collision axes
+                if (earliestCollision.normal.x != 0)
+                    characterBodyA->velocity.x = 0;
+
+                if (earliestCollision.normal.y != 0)
+                    characterBodyA->velocity.y = 0;
+                
+                // Remaining velocity, for sliding
+                Instant::Vector2 remainingVel = characterBodyA->velocity * (1.0f - t_move);
+                
+                CollisionResult slideCollision;
+
+                // Check all moving A-boxes against all static B-boxes (again)
+                for (auto& boxA : physicalBoxesA) {
+                    for (const auto& colliderB : colliders) {
+                        if (colliderB.entity == entityA) continue; // Skip self
+                        
+                        for (auto& boxB : colliderB.physicalBoxes) {
+                            CollisionResult result = SweptAABB(
+                                                               boxA, tA, remainingVel,
+                                                               boxB, colliderB.transform);
+                            
+                            // If a collision occurs earlier than the current earliest, update it
+                            if (result.collided && result.t < earliestCollision.t) {
+                                slideCollision = result;
+                            }
+                        }
+                    }
+                }
+                
+                // Apply movement up to the collision point, or full movement if no collision
+                float t_slide = slideCollision.t;
+                
+                // Move up to the point of impact
+                tA->position.x += remainingVel.x * t_slide;
+                tA->position.y += remainingVel.y * t_slide;
+                
                 if (t_move < 1.0) {
                     // Collision occured. For future work if I want to add code here
                 }
