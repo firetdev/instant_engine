@@ -1,5 +1,7 @@
 // Physics System class
 
+// TODO: Add "sliding": collisions only stop movement one the axis they're colliding on
+
 #pragma once
 
 #include "../entity.hpp"
@@ -14,9 +16,9 @@
 #include <memory>
 
 struct CollisionResult {
-    float t = 1.0f;       // Time of Impact (0.0 to 1.0). 1.0 means no collision.
-    Instant::Vector2 normal = {0, 0}; // Collision normal (which side was hit)
-    bool collided = false;   // Did a collision occur?
+    float t = 1.0f;  // Time of Impact (0.0 to 1.0). 1.0 means no collision.
+    Instant::Vector2 normal = {0, 0};  // Collision normal (which side was hit)
+    bool collided = false;  // Did a collision occur?
 };
 
 class PhysicsSystem : public BaseSystem {
