@@ -1,8 +1,6 @@
 // Physics System class
 
-// TODO: Fix onGround/onWall/onCeiling flags, Add dynamic gravity
-// To fix flags: turn on when you hit a wall, turn off when position
-// along axis (X for wall, Y for ground or ceiling) changes
+// TODO: Fix inconsistent jump height in demo, Add dynamic gravity
 
 #pragma once
 
@@ -30,7 +28,7 @@ public:
         const std::shared_ptr<CollisionBox>& bBox, const std::shared_ptr<Transform>& bTransform)
     {
         // Epsilon to handle floating point issues near zero
-        const float EPSILON = 1e-5f;
+        const float EPSILON = 1e-6f;
 
         // Calculate the world-space minimum and maximum points for both AABBs
         
@@ -188,12 +186,25 @@ public:
 
             // Check if the cast succeeded. If it did, this is a CharacterBody.
             if (characterBodyA) {
+                //Reset flags
+                if (characterBodyA->onGround && characterBodyA->velocity.y != 0) {
+                    characterBodyA->onGround = false;
+                }
+                if (characterBodyA->onCeiling && characterBodyA->velocity.y != 0) {
+                    characterBodyA->onCeiling = false;
+                }
+                if (characterBodyA->onWall && characterBodyA->velocity.x != 0) {
+                    characterBodyA->onWall = false;
+                }
+
                 // Update gravity
                 if (characterBodyA->dynamicGravity == false) {
                     characterBodyA->gravity = Instant::gravity;
                 } else {
                     // Body is using dynamic gravity--will need to add logic later
                 }
+                
+                // Get transform
                 auto transformA = entityA->getComponents<Transform>();
                 if (transformA.empty()) continue;
                 std::shared_ptr<Transform> tA = transformA[0]; // Get the transform
@@ -244,6 +255,14 @@ public:
                 if (earliestCollision.normal.y != 0)
                     characterBodyA->velocity.y = 0;
                 
+                if (earliestCollision.collided) {
+                    Instant::Vector2 n = earliestCollision.normal;
+
+                    if (n.y == -1) characterBodyA->onGround = true;
+                    if (n.y ==  1) characterBodyA->onCeiling = true;
+                    if (n.x !=  0) characterBodyA->onWall = true;
+                }
+                
                 // Remaining velocity, for sliding
                 Instant::Vector2 remainingVel = characterBodyA->velocity * (1.0f - t_move);
                 
@@ -280,6 +299,14 @@ public:
 
                 if (slideCollision.normal.y != 0)
                     characterBodyA->velocity.y = 0;
+                
+                if (slideCollision.collided) {
+                    Instant::Vector2 n = slideCollision.normal;
+
+                    if (n.y == -1) characterBodyA->onGround = true;
+                    if (n.y ==  1) characterBodyA->onCeiling = true;
+                    if (n.x !=  0) characterBodyA->onWall = true;
+                }
                 
                 if (t_move < 1.0) {
                     // Collision occured

@@ -8,21 +8,19 @@ public:
     void update() override {
         getComponents<CharacterBody>()[0]->velocity.x = 0;
         
-        getComponents<CharacterBody>()[0]->applyGravity();
+        if (getComponents<CharacterBody>()[0]->onGround == false)
+            getComponents<CharacterBody>()[0]->applyGravity();
+        else
+            getComponents<CharacterBody>()[0]->velocity.y = 0;
         
-        if (Input::inputs["w"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
+        if (Input::inputs["w"] && getComponents<CharacterBody>()[0]->onGround == true) {
+            getComponents<CharacterBody>()[0]->velocity.y = -1000 * Instant::delta;
         }
         if (Input::inputs["a"]) {
             getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
         }
         if (Input::inputs["d"]) {
             getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
-        }
-        
-        for (auto& e : getComponents<CollisionBox>()[0]->collidingWith) {
-            if (e.lock()->getName() == "Enemy")
-                std::cout << "Colliding with enemy!\n";
         }
     }
 
@@ -113,11 +111,9 @@ public:
 };
 
 int main() {
-    // 1. Create the GameManager
     GameManager game(800, 600, "My Game Engine");
     sf::RenderWindow& window = game.getWindow();
 
-    // 2. Create and add entities
     try {
         game.registerScene<MainScene>("Main");
         game.changeScene("Main");
@@ -129,7 +125,6 @@ int main() {
         return -1;
     }
 
-    // 3. Run the main game loop
     while (window.isOpen()) {
         game.update();
     }
