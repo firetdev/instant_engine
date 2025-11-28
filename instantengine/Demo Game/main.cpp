@@ -7,15 +7,11 @@ public:
     
     void update() override {
         getComponents<CharacterBody>()[0]->velocity.x = 0;
-        //getComponents<CharacterBody>()[0]->velocity.y = 0;
         
         getComponents<CharacterBody>()[0]->applyGravity();
         
         if (Input::inputs["w"]) {
             getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
-        }
-        if (Input::inputs["s"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = 100 * Instant::delta;
         }
         if (Input::inputs["a"]) {
             getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
@@ -80,7 +76,7 @@ public:
     void setup() override {
         // Create components
         auto transform = std::make_shared<Transform>();
-        transform->position = {200, 200};
+        transform->position = {100, 200};
         transform->scale = {1.0f, 1.0f};
 
         auto sprite = std::make_shared<Sprite>("player.png");

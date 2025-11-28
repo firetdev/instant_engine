@@ -1,6 +1,8 @@
 // Physics System class
 
-// TODO: Add dynamic gravity
+// TODO: Fix onGround/onWall/onCeiling flags, Add dynamic gravity
+// To fix flags: turn on when you hit a wall, turn off when position
+// along axis (X for wall, Y for ground or ceiling) changes
 
 #pragma once
 
@@ -272,8 +274,15 @@ public:
                 tA->position.x += remainingVel.x * t_slide;
                 tA->position.y += remainingVel.y * t_slide;
                 
+                // Kill velocity on collision axes
+                if (slideCollision.normal.x != 0)
+                    characterBodyA->velocity.x = 0;
+
+                if (slideCollision.normal.y != 0)
+                    characterBodyA->velocity.y = 0;
+                
                 if (t_move < 1.0) {
-                    // Collision occured. For future work if I want to add code here
+                    // Collision occured
                 }
             }
         }

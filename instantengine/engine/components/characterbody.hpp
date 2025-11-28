@@ -9,6 +9,7 @@ struct CharacterBody : public PhysicsBody {
     Instant::Vector2 velocity;
     Instant::Vector2 gravity = {0, 0};
     
+    bool onGround = false;
     bool dynamicGravity = false;  // Dynamic gravity is calculated using physics equations and mass of objects
     float maxSpeed = 100000000000;  // Maximum speed
     

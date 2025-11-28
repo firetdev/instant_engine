@@ -55,5 +55,5 @@ public:
     }
 };
 
-inline Vector2 gravity = {0, 50};
+inline Vector2 gravity = {0, 100};
 }
