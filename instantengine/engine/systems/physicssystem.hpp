@@ -186,14 +186,17 @@ public:
 
             // Check if the cast succeeded. If it did, this is a CharacterBody.
             if (characterBodyA) {
+                // Calculate displacement
+                Instant::Vector2 displacement = characterBodyA->velocity * Instant::delta;
+                
                 //Reset flags
-                if (characterBodyA->onGround && characterBodyA->velocity.y != 0) {
+                if (characterBodyA->onGround && displacement.y != 0) {
                     characterBodyA->onGround = false;
                 }
-                if (characterBodyA->onCeiling && characterBodyA->velocity.y != 0) {
+                if (characterBodyA->onCeiling && displacement.y != 0) {
                     characterBodyA->onCeiling = false;
                 }
-                if (characterBodyA->onWall && characterBodyA->velocity.x != 0) {
+                if (characterBodyA->onWall && displacement.x != 0) {
                     characterBodyA->onWall = false;
                 }
 
@@ -230,7 +233,7 @@ public:
                         
                         for (auto& boxB : colliderB.physicalBoxes) {
                             CollisionResult result = SweptAABB(
-                                                               boxA, tA, characterBodyA->velocity,
+                                                               boxA, tA, displacement,
                                                                boxB, colliderB.transform);
                             
                             // If a collision occurs earlier than the current earliest, update it
@@ -245,8 +248,8 @@ public:
                 float t_move = earliestCollision.t;
                 
                 // Move up to the point of impact
-                tA->position.x += characterBodyA->velocity.x * t_move;
-                tA->position.y += characterBodyA->velocity.y * t_move;
+                tA->position.x += displacement.x * t_move;
+                tA->position.y += displacement.y * t_move;
                 
                 // Kill velocity on collision axes
                 if (earliestCollision.normal.x != 0)
@@ -264,7 +267,7 @@ public:
                 }
                 
                 // Remaining velocity, for sliding
-                Instant::Vector2 remainingVel = characterBodyA->velocity * (1.0f - t_move);
+                Instant::Vector2 remainingVel = displacement * (1.0f - t_move);
                 
                 CollisionResult slideCollision;
 

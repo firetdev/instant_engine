@@ -14,17 +14,20 @@ public:
             getComponents<CharacterBody>()[0]->velocity.y = 0;
         
         if (Input::inputs["w"] && getComponents<CharacterBody>()[0]->onGround == true) {
-            getComponents<CharacterBody>()[0]->velocity.y = -1000 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = -400;
         }
         if (Input::inputs["a"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = -100;
         }
         if (Input::inputs["d"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = 100;
         }
     }
 
     void setup() override {
+        // CHANGE ENGINE GRAVITY
+        Instant::gravity.y = 400;
+        
         // Create components
         auto transform = std::make_shared<Transform>();
         transform->position = {100, 100};
@@ -58,23 +61,23 @@ public:
         getComponents<CharacterBody>()[0]->velocity.x = 0;
         getComponents<CharacterBody>()[0]->velocity.y = 0;
         if (Input::inputs["Up"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = -100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = -100;
         }
         if (Input::inputs["Down"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.y = 100;
         }
         if (Input::inputs["Left"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = -100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = -100;
         }
         if (Input::inputs["Right"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = 100 * Instant::delta;
+            getComponents<CharacterBody>()[0]->velocity.x = 100;
         }
     }
 
     void setup() override {
         // Create components
         auto transform = std::make_shared<Transform>();
-        transform->position = {100, 200};
+        transform->position = {100, 400};
         transform->scale = {1.0f, 1.0f};
 
         auto sprite = std::make_shared<Sprite>("player.png");

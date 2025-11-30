@@ -14,12 +14,7 @@ struct CharacterBody : public PhysicsBody {
     float maxSpeed = 100000000000;  // Maximum speed
     
     void applyGravity() {
-        // Q: Why am I multiplying by delta twice?
-        // A: The physics system doesn't ever multiply by delta, so
-        // whenever you change the velocity you need to multiply it by delta.
-        // However, we also need to multiply gravity by delta so that
-        // it accelerates by the gravity constant per second, rather than per frame.
-        velocity.x = velocity.x + gravity.x * Instant::delta * Instant::delta;
-        velocity.y = velocity.y + gravity.y * Instant::delta * Instant::delta;
+        velocity.x += gravity.x * Instant::delta;
+        velocity.y += gravity.y * Instant::delta;
     }
 };
