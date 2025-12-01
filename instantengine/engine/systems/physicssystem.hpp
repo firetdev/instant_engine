@@ -1,6 +1,6 @@
 // Physics System class
 
-// TODO: Fix inconsistent jump height in demo, Add dynamic gravity
+// TODO: Add dynamic gravity
 
 #pragma once
 
