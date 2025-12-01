@@ -8,7 +8,7 @@ Instant Engine is a 2D game engine built with C++ and SFML.  It's designed to gi
 ## Installing and compiling
 The only requirement for compiling an Instant Engine project (other than the engine itself is SFML 3.
 
-To use the engine, clone the repo (or just the "engine" folder.  In your project, you'll include "engine.h", which contains all the includes necessary.
+To use the engine, clone the repo (or just the "engine" folder.  In your project, you'll include "engine.hpp", which contains all the includes necessary.
 
 ## Design and features
 Instant Engine uses a hybrid of a data-oriented ECS (Entity-Component System) and an object-oriented inheritence system.  Games are made up of **Scenes**, which in turn are made up of
