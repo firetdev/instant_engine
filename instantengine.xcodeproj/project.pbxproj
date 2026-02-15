@@ -17,6 +17,7 @@
 		AB8616C62EC115280048B2A0 /* libsfml-audio.3.0.2.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = AB8616BD2EC115280048B2A0 /* libsfml-audio.3.0.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		AB8616C72EC115280048B2A0 /* libsfml-graphics.3.0.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8616BE2EC115280048B2A0 /* libsfml-graphics.3.0.2.dylib */; };
 		AB8616C82EC115280048B2A0 /* libsfml-graphics.3.0.2.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = AB8616BE2EC115280048B2A0 /* libsfml-graphics.3.0.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		ABFC45132F425C9500ABC7EA /* player.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = ABFC45122F425C9500ABC7EA /* player.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				ABFC45132F425C9500ABC7EA /* player.png in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,11 +55,25 @@
 		AB8616BC2EC115280048B2A0 /* libsfml-window.3.0.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.3.0.2.dylib"; path = "../../../../../../opt/homebrew/Cellar/sfml/3.0.2/lib/libsfml-window.3.0.2.dylib"; sourceTree = "<group>"; };
 		AB8616BD2EC115280048B2A0 /* libsfml-audio.3.0.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.3.0.2.dylib"; path = "../../../../../../opt/homebrew/Cellar/sfml/3.0.2/lib/libsfml-audio.3.0.2.dylib"; sourceTree = "<group>"; };
 		AB8616BE2EC115280048B2A0 /* libsfml-graphics.3.0.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.3.0.2.dylib"; path = "../../../../../../opt/homebrew/Cellar/sfml/3.0.2/lib/libsfml-graphics.3.0.2.dylib"; sourceTree = "<group>"; };
+		ABFC45122F425C9500ABC7EA /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		ABFC45152F425D0E00ABC7EA /* Exceptions for "instantengine" folder in "instantengine" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				KNOWN_BUGS.txt,
+			);
+			target = AB8616AE2EC114CD0048B2A0 /* instantengine */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AB8616B12EC114CD0048B2A0 /* instantengine */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ABFC45152F425D0E00ABC7EA /* Exceptions for "instantengine" folder in "instantengine" target */,
+			);
 			path = instantengine;
 			sourceTree = "<group>";
 		};
@@ -82,6 +98,7 @@
 		AB8616A62EC114CD0048B2A0 = {
 			isa = PBXGroup;
 			children = (
+				ABFC45122F425C9500ABC7EA /* player.png */,
 				AB8616B12EC114CD0048B2A0 /* instantengine */,
 				AB8616B92EC115280048B2A0 /* Frameworks */,
 				AB8616B02EC114CD0048B2A0 /* Products */,
