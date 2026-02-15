@@ -19,6 +19,7 @@ struct CollisionResult {
     float t = 1.0f;  // Time of Impact (0.0 to 1.0). 1.0 means no collision.
     Instant::Vector2 normal = {0, 0};  // Collision normal (which side was hit)
     bool collided = false;  // Did a collision occur?
+    float pushDistance = 0.0f;  // If they're overlapping, by how far
 };
 
 class PhysicsSystem : public BaseSystem {
@@ -110,6 +111,39 @@ public:
         
         CollisionResult result;
 
+        // Check if they were already overlapping
+        bool isOverlapping = (aMaxX > bMinX && aMinX < bMaxX) &&
+                             (aMaxY > bMinY && aMinY < bMaxY);
+        
+        if (isOverlapping) {
+            result.collided = true;
+            result.t = 0.0f;
+
+            // Calculate overlap on all 4 sides
+            float overlapLeft   = aMaxX - bMinX;
+            float overlapRight  = bMaxX - aMinX;
+            float overlapTop    = aMaxY - bMinY;
+            float overlapBottom = bMaxY - aMinY;
+
+            // Find the smallest overlap
+            float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
+
+            if (minOverlap == overlapLeft) {
+                result.normal = {-1.0f, 0.0f};
+                result.pushDistance = overlapLeft;
+            } else if (minOverlap == overlapRight) {
+                result.normal = {1.0f, 0.0f};
+                result.pushDistance = overlapRight;
+            } else if (minOverlap == overlapTop) {
+                result.normal = {0.0f, -1.0f};
+                result.pushDistance = overlapTop;
+            } else { // overlapBottom
+                result.normal = {0.0f, 1.0f};
+                result.pushDistance = overlapBottom;
+            }
+            return result;
+        }
+        
         // Check if collision occurred within the movement range [0, 1]
         if (t_entry > t_exit || t_entry < 0.0f || t_entry > 1.0f) {
             // No collision, or collision happened outside of the movement range, or already separated
@@ -189,8 +223,8 @@ public:
                 // Calculate displacement
                 Instant::Vector2 displacement = characterBodyA->velocity * Instant::delta;
                 
-                //Reset flags
-                if (characterBodyA->onGround && displacement.y != 0) {
+                // Reset flags
+                if (characterBodyA->onGround && displacement.y < 0) {
                     characterBodyA->onGround = false;
                 }
                 if (characterBodyA->onCeiling && displacement.y != 0) {
@@ -232,8 +266,7 @@ public:
                         if (colliderB.entity == entityA) continue; // Skip self
                         
                         for (auto& boxB : colliderB.physicalBoxes) {
-                            CollisionResult result = SweptAABB(
-                                                               boxA, tA, displacement,
+                            CollisionResult result = SweptAABB(boxA, tA, displacement,
                                                                boxB, colliderB.transform);
                             
                             // If a collision occurs earlier than the current earliest, update it
@@ -250,6 +283,13 @@ public:
                 // Move up to the point of impact
                 tA->position.x += displacement.x * t_move;
                 tA->position.y += displacement.y * t_move;
+                
+                // If we are overlapping (t is 0), nudge the player out
+                if (earliestCollision.collided && earliestCollision.t == 0.0f) {
+                    const float EPSILON = 0.01f;  // A tiny extra bit to ensure they aren't touching
+                    tA->position.x += earliestCollision.normal.x * (earliestCollision.pushDistance + EPSILON);
+                    tA->position.y += earliestCollision.normal.y * (earliestCollision.pushDistance + EPSILON);
+                }
                 
                 // Kill velocity on collision axes
                 if (earliestCollision.normal.x != 0)
