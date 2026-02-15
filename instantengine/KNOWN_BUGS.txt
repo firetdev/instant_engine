@@ -1,0 +1,3 @@
+KNOWN BUGS:
+
+-In demo game, if the player hits the ground but then the ground moves, the player remains stationary. Maybe it thinks it's on the ground still? (Feb 15 2026)
