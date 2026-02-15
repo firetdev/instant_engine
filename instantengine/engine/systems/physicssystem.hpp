@@ -317,8 +317,7 @@ public:
                         if (colliderB.entity == entityA) continue; // Skip self
                         
                         for (auto& boxB : colliderB.physicalBoxes) {
-                            CollisionResult result = SweptAABB(
-                                                               boxA, tA, remainingVel,
+                            CollisionResult result = SweptAABB(boxA, tA, remainingVel,
                                                                boxB, colliderB.transform);
                             
                             // If a collision occurs earlier than the current earliest, update it
