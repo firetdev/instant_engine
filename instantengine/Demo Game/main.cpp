@@ -1,103 +1,7 @@
 #include "../engine/engine.hpp"
-
-class Player : public Entity {
-public:
-    Player(int id, const std::string& name)
-            : Entity(id, name) {}
-    
-    void update() override {
-        getComponents<CharacterBody>()[0]->velocity.x = 0;
-        
-        if (getComponents<CharacterBody>()[0]->onGround == false)
-            getComponents<CharacterBody>()[0]->applyGravity();
-        else
-            getComponents<CharacterBody>()[0]->velocity.y = 0;
-        
-        if (Input::inputs["w"] && getComponents<CharacterBody>()[0]->onGround == true) {
-            getComponents<CharacterBody>()[0]->velocity.y = -400;
-        }
-        if (Input::inputs["a"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = -100;
-        }
-        if (Input::inputs["d"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = 100;
-        }
-    }
-
-    void setup() override {
-        // CHANGE ENGINE GRAVITY
-        Instant::gravity.y = 400;
-        
-        // Create components
-        auto transform = std::make_shared<Transform>();
-        transform->position = {100, 100};
-        transform->scale = {1.0f, 1.0f};
-
-        auto sprite = std::make_shared<Sprite>("player.png");
-        
-        auto collider = std::make_shared<CollisionBox>();
-        collider->size = {64, 64}; // Example size
-        collider->isPhysical = true;
-        
-        auto body = std::make_shared<CharacterBody>();
-
-        // Add them to the entity instance
-        addComponent(transform);
-        addComponent(sprite);
-        addComponent(collider);
-        addComponent(body);
-
-        // Can also run custom Player-specific logic here
-        std::cout << "Player entity has been initialized.\n";
-    }
-};
-
-class Enemy : public Entity {
-public:
-    Enemy(int id, const std::string& name)
-            : Entity(id, name) {}
-    
-    void update() override {
-        getComponents<CharacterBody>()[0]->velocity.x = 0;
-        getComponents<CharacterBody>()[0]->velocity.y = 0;
-        if (Input::inputs["Up"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = -100;
-        }
-        if (Input::inputs["Down"]) {
-            getComponents<CharacterBody>()[0]->velocity.y = 100;
-        }
-        if (Input::inputs["Left"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = -100;
-        }
-        if (Input::inputs["Right"]) {
-            getComponents<CharacterBody>()[0]->velocity.x = 100;
-        }
-    }
-
-    void setup() override {
-        // Create components
-        auto transform = std::make_shared<Transform>();
-        transform->position = {100, 400};
-        transform->scale = {1.0f, 1.0f};
-
-        auto sprite = std::make_shared<Sprite>("player.png");
-        
-        auto collider = std::make_shared<CollisionBox>();
-        collider->size = {64, 64}; // Example size
-        collider->isPhysical = true;
-
-        auto body = std::make_shared<CharacterBody>();
-        
-        // Add them to the entity instance
-        addComponent(transform);
-        addComponent(sprite);
-        addComponent(collider);
-        addComponent(body);
-
-        // Can also run custom Player-specific logic here
-        std::cout << "Enemy entity has been initialized.\n";
-    }
-};
+#include "player.hpp"
+#include "block.hpp"
+#include "movingblock.hpp"
 
 class MainScene : public Scene {
 public:
@@ -106,15 +10,32 @@ public:
     void setup() override {
         auto player = std::make_shared<Player>(1, "Player");
         addEntity(player);
-        auto enemy = std::make_shared<Enemy>(1, "Enemy");
-        addEntity(enemy);
+        
+        auto moving = std::make_shared<MovingBlock>(1, "Player", 200, 150, 700);
+        addEntity(moving);
+        moving->getComponents<Transform>()[0]->position = {900, 400};
+        
+        std::vector<std::shared_ptr<Block>> blocks;
+        for (int i = 2; i <= 5; i++) {
+            blocks.push_back(std::make_shared<Block>(i, "Block" + std::to_string(i)));
+        }
+        
+        for(std::shared_ptr<Block> block : blocks) {
+            addEntity(block);
+        }
+        
+        blocks[0]->getComponents<Transform>()[0]->position = {100, 400};
+        blocks[1]->getComponents<Transform>()[0]->position = {300, 300};
+        blocks[2]->getComponents<Transform>()[0]->position = {700, 400};
+        blocks[3]->getComponents<Transform>()[0]->position = {1100, 200};
+        
         addLogicSystem(std::make_shared<CollisionSystem>());
         addLogicSystem(std::make_shared<PhysicsSystem>());
     }
 };
 
 int main() {
-    GameManager game(800, 600, "My Game Engine");
+    GameManager game(1200, 800, "My Game Engine");
     sf::RenderWindow& window = game.getWindow();
 
     try {
