@@ -42,8 +42,7 @@ int main() {
         game.registerScene<MainScene>("Main");
         game.changeScene("Main");
         game.update();
-    }
-    catch (const std::exception& e) {
+    } catch (const std::exception& e) {
         // Handle texture loading failure
         std::cerr << "Error: " << e.what() << std::endl;
         return -1;
