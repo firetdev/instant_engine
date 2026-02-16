@@ -245,12 +245,41 @@ public:
                 auto transformA = entityA->getComponents<Transform>();
                 if (transformA.empty()) continue;
                 std::shared_ptr<Transform> tA = transformA[0]; // Get the transform
+                std::shared_ptr<Transform> tB;
+                
+                // Set flags
+                if (characterBodyA->onGround) {
+                    auto other = characterBodyA->collisions["ground"].other.lock();
+                    if (tA->position != characterBodyA->collisions["ground"].selfPast
+                        || characterBodyA->collisions["ground"].otherPast != other->position)
+                    {
+                        characterBodyA->onGround = false;
+                    }
+                }
+                
+                if (characterBodyA->onCeiling) {
+                    auto other = characterBodyA->collisions["ceiling"].other.lock();
+                    if (tA->position != characterBodyA->collisions["ceiling"].selfPast
+                        || characterBodyA->collisions["ceiling"].otherPast != other->position)
+                    {
+                        characterBodyA->onCeiling = false;
+                    }
+                }
+                
+                if (characterBodyA->onWall) {
+                    auto other = characterBodyA->collisions["wall"].other.lock();
+                    if (tA->position != characterBodyA->collisions["wall"].selfPast
+                        || characterBodyA->collisions["wall"].otherPast != other->position)
+                    {
+                        characterBodyA->onWall = false;
+                    }
+                }
                 
                 // Get physical CollisionBoxes for entityA
                 std::vector<std::shared_ptr<CollisionBox>> physicalBoxesA;
                 auto boxesA = entityA->getComponents<CollisionBox>();
                 for (auto& boxA : boxesA) {
-                    if (boxA->isPhysical) { // Assuming isPhysical is the flag
+                    if (boxA->isPhysical) {
                         physicalBoxesA.push_back(boxA);
                     }
                 }
@@ -272,6 +301,7 @@ public:
                             // If a collision occurs earlier than the current earliest, update it
                             if (result.collided && result.t < earliestCollision.t) {
                                 earliestCollision = result;
+                                tB = colliderB.transform;
                             }
                         }
                     }
@@ -301,9 +331,24 @@ public:
                 if (earliestCollision.collided) {
                     Instant::Vector2 n = earliestCollision.normal;
 
-                    if (n.y == -1) characterBodyA->onGround = true;
-                    if (n.y ==  1) characterBodyA->onCeiling = true;
-                    if (n.x !=  0) characterBodyA->onWall = true;
+                    if (n.y == -1) {
+                        characterBodyA->onGround = true;
+                        characterBodyA->collisions["ground"] = {
+                            tA->position, tB->position, tB
+                        };
+                    }
+                    if (n.y ==  1) {
+                        characterBodyA->onCeiling = true;
+                        characterBodyA->collisions["ceiling"] = {
+                            tA->position, tB->position, tB
+                        };
+                    }
+                    if (n.x !=  0) {
+                        characterBodyA->onWall = true;
+                        characterBodyA->collisions["wall"] = {
+                            tA->position, tB->position, tB
+                        };
+                    }
                 }
                 
                 // Remaining velocity, for sliding
@@ -345,9 +390,24 @@ public:
                 if (slideCollision.collided) {
                     Instant::Vector2 n = slideCollision.normal;
 
-                    if (n.y == -1) characterBodyA->onGround = true;
-                    if (n.y ==  1) characterBodyA->onCeiling = true;
-                    if (n.x !=  0) characterBodyA->onWall = true;
+                    if (n.y == -1) {
+                        characterBodyA->onGround = true;
+                        characterBodyA->collisions["ground"] = {
+                            tA->position, tB->position, tB
+                        };
+                    }
+                    if (n.y ==  1) {
+                        characterBodyA->onCeiling = true;
+                        characterBodyA->collisions["ceiling"] = {
+                            tA->position, tB->position, tB
+                        };
+                    }
+                    if (n.x !=  0) {
+                        characterBodyA->onWall = true;
+                        characterBodyA->collisions["wall"] = {
+                            tA->position, tB->position, tB
+                        };
+                    }
                 }
                 
                 if (t_move < 1.0) {

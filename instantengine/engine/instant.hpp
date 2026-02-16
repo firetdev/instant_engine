@@ -37,6 +37,14 @@ public:
     Vector2 operator/(float scalar) const {
         return Vector2(x / scalar, y / scalar);
     }
+    
+    bool operator==(const Vector2& other) const {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const Vector2& other) const {
+        return !(*this == other);
+    }
 
     // Magnitude (length) of the vector
     float length() const {
