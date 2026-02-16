@@ -248,6 +248,7 @@ public:
                 std::shared_ptr<Transform> tB;
                 
                 // Set flags
+                // If one of the bodies involved in a collision has moved, the flags are reset
                 if (characterBodyA->onGround) {
                     auto other = characterBodyA->collisions["ground"].other.lock();
                     if (tA->position != characterBodyA->collisions["ground"].selfPast
@@ -331,20 +332,27 @@ public:
                 if (earliestCollision.collided) {
                     Instant::Vector2 n = earliestCollision.normal;
 
+                    // Update flags
                     if (n.y == -1) {
                         characterBodyA->onGround = true;
+                        
+                        // Data on flag activation
                         characterBodyA->collisions["ground"] = {
                             tA->position, tB->position, tB
                         };
                     }
                     if (n.y ==  1) {
                         characterBodyA->onCeiling = true;
+                        
+                        // Data on flag activation
                         characterBodyA->collisions["ceiling"] = {
                             tA->position, tB->position, tB
                         };
                     }
                     if (n.x !=  0) {
                         characterBodyA->onWall = true;
+                        
+                        // Data on flag activation
                         characterBodyA->collisions["wall"] = {
                             tA->position, tB->position, tB
                         };
@@ -390,20 +398,27 @@ public:
                 if (slideCollision.collided) {
                     Instant::Vector2 n = slideCollision.normal;
 
+                    // Update flags
                     if (n.y == -1) {
                         characterBodyA->onGround = true;
+                        
+                        // Data on flag activation
                         characterBodyA->collisions["ground"] = {
                             tA->position, tB->position, tB
                         };
                     }
                     if (n.y ==  1) {
                         characterBodyA->onCeiling = true;
+                        
+                        // Data on flag activation
                         characterBodyA->collisions["ceiling"] = {
                             tA->position, tB->position, tB
                         };
                     }
                     if (n.x !=  0) {
                         characterBodyA->onWall = true;
+                        
+                        // Data on flag activation
                         characterBodyA->collisions["wall"] = {
                             tA->position, tB->position, tB
                         };
