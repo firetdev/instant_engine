@@ -215,7 +215,6 @@ public:
             if (bodies.empty()) continue;
             std::shared_ptr<PhysicsBody> bodyA = bodies[0];
 
-            // Move body
             auto characterBodyA = std::dynamic_pointer_cast<CharacterBody>(bodyA);
 
             // Check if the cast succeeded. If it did, this is a CharacterBody.
@@ -284,7 +283,11 @@ public:
                         physicalBoxesA.push_back(boxA);
                     }
                 }
-                if (physicalBoxesA.empty()) continue; // Entity A has nothing physical to collide with/against
+                if (physicalBoxesA.empty()) {  // Entity A has nothing physical to collide with/against
+                    tA->position.x += displacement.x;
+                    tA->position.y += displacement.y;
+                    continue;
+                }
                 
                 // Find the earliest collision time (t_min) across all potential collisions
                 CollisionResult earliestCollision;

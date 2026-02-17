@@ -8,6 +8,8 @@
 #include <string>
 #include <memory>
 
+class Scene;  // Forward declaration
+
 class Entity : public std::enable_shared_from_this<Entity> {
 public:
     Entity(int id, std::string name) : id(id), name(name), type(name) {}
@@ -27,10 +29,13 @@ public:
     void setType(std::string newType) { type = newType; }  // Set type
     void setName(std::string newName) { name = newName; }  // Set name
     void setId(int newId) { id = newId; }  // Set ID
+    void setScene(std::shared_ptr<Scene> sc) { m_scene = sc; }  // Set scene pointer
     
     virtual void update() = 0;  // Update function where entity logic will be coded
     virtual void setup() = 0;  // Setup function where components will be set up
-
+protected:
+    std::weak_ptr<Scene> m_scene;
+    
 private:
     int id;  // For identifying entities
     std::string name;  // Also for identification

@@ -1,6 +1,10 @@
 #pragma once
 
 #include "../engine/engine.hpp"
+#include "player.hpp"
+#include "block.hpp"
+#include "movingblock.hpp"
+#include "enemy.hpp"
 
 class MainScene : public Scene {
 public:
@@ -9,6 +13,9 @@ public:
     void setup() override {
         auto player = std::make_shared<Player>(1, "Player", Instant::Vector2(100, 100));
         addEntity(player);
+        
+        auto enemy = std::make_shared<Enemy>(1, "Enemy", Instant::Vector2(1000, 800));
+        addEntity(enemy);
         
         auto moving = std::make_shared<MovingBlock>(1, "MovingBlock", Instant::Vector2(900, 400), 200, 150, 700);
         addEntity(moving);

@@ -48,7 +48,7 @@ public:
         for (auto& entityA : entities) {
             auto colsA = entityA->getComponents<CollisionBox>();
             if (colsA.empty()) continue;
-
+            
             for (auto& colA : colsA) {
                 if (colA->isPhysical) continue;
 
@@ -59,10 +59,9 @@ public:
                     if (colsB.empty()) continue;
 
                     for (auto& colB : colsB) {
-
                         if (colA == colB) continue; // skip self
                         if (colB->isPhysical) continue;
-
+                        
                         if (isColliding(colA, colB)) {
                             colA->collidingWith.emplace_back(colB->getParent());
                         }

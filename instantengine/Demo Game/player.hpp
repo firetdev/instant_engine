@@ -49,12 +49,17 @@ public:
         collider->size = {64, 64};  // Example size
         collider->isPhysical = true;
         
+        auto collider2 = std::make_shared<CollisionBox>();
+        collider2->size = {64, 64};  // Example size
+        collider2->isPhysical = false;
+        
         auto body = std::make_shared<CharacterBody>();
 
         // Add them to the entity instance
         addComponent(transform);
         addComponent(sprite);
         addComponent(collider);
+        addComponent(collider2);
         addComponent(body);
 
         // Can also run custom Player-specific logic here

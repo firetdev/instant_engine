@@ -1,6 +1,3 @@
-#include "player.hpp"
-#include "block.hpp"
-#include "movingblock.hpp"
 #include "mainscene.hpp"
 
 int main() {

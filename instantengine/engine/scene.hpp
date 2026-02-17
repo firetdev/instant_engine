@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 
-class Scene {
+class Scene : public std::enable_shared_from_this<Scene> {
 public:
     // Constructor: sets up a non-resizable window
     Scene(const std::string name)
@@ -21,6 +21,7 @@ public:
     
     // Add an entity to the game
     void addEntity(std::shared_ptr<Entity> entity) {
+        entity->setScene(shared_from_this());
         entity->setup();
         
         // Make sure there are no repeated ids or names
@@ -73,6 +74,16 @@ public:
     
     // Accessors
     std::vector<std::shared_ptr<Entity>>& getEntities() { return m_entities; }
+    
+    std::shared_ptr<Entity> getEntityByName(std::string name) {
+        for (std::shared_ptr<Entity> e : m_entities) {
+            if (e->getName() == name)
+                return e;
+        }
+        
+        return nullptr;
+    }
+    
     const std::string& getName() const { return m_name; }
 
 protected:
