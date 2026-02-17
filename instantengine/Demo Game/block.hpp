@@ -7,11 +7,17 @@ public:
     Block(int id, const std::string& name)
             : Entity(id, name) {}
     
+    Block(int id, const std::string& name, Instant::Vector2 pos)
+            : Entity(id, name), startPos(pos) {}
+    
+    Instant::Vector2 startPos;
+    
     void update() override {}
 
     void setup() override {
         // Create components
         auto transform = std::make_shared<Transform>();
+        transform->position = startPos;
         transform->scale = {1.0f, 1.0f};
 
         auto sprite = std::make_shared<Sprite>("player.png");

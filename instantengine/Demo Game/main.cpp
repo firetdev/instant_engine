@@ -8,12 +8,11 @@ public:
     MainScene() : Scene("Main Scene") {}
     
     void setup() override {
-        auto player = std::make_shared<Player>(1, "Player");
+        auto player = std::make_shared<Player>(1, "Player", Instant::Vector2(100, 100));
         addEntity(player);
         
-        auto moving = std::make_shared<MovingBlock>(1, "Player", 200, 150, 700);
+        auto moving = std::make_shared<MovingBlock>(1, "MovingBlock", Instant::Vector2(900, 400), 200, 150, 700);
         addEntity(moving);
-        moving->getComponents<Transform>()[0]->position = {900, 400};
         
         std::vector<std::shared_ptr<Block>> blocks;
         for (int i = 2; i <= 5; i++) {

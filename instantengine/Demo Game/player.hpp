@@ -4,8 +4,10 @@
 
 class Player : public Entity {
 public:
-    Player(int id, const std::string& name)
-            : Entity(id, name) {}
+    Player(int id, const std::string& name, Instant::Vector2 pos)
+            : Entity(id, name), startPos(pos) {}
+    
+    Instant::Vector2 startPos;
     
     void update() override {
         getComponents<CharacterBody>()[0]->velocity.x = 0;
@@ -38,7 +40,7 @@ public:
         
         // Create components
         auto transform = std::make_shared<Transform>();
-        transform->position = {100, 100};
+        transform->position = startPos;
         transform->scale = {1.0f, 1.0f};
 
         auto sprite = std::make_shared<Sprite>("player.png");
