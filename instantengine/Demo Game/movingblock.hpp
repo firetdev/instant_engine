@@ -16,6 +16,7 @@ public:
     void update() override {
         if (getComponents<Transform>()[0]->position.x != startPos.x)
             getComponents<Transform>()[0]->position.x = startPos.x;
+        
         if (getComponents<Transform>()[0]->position.y > next)
             getComponents<CharacterBody>()[0]->velocity.y = -vel;
         else
