@@ -10,7 +10,7 @@
 
 struct CollisionBox : public BaseComponent {
     Instant::Vector2 position; // Top-left corner
-    Instant::Vector2 size;     // Width and height
+    Instant::Vector2 size;  // Width and height
     
     bool isPhysical = false;  // Should collider affect movement?
 
