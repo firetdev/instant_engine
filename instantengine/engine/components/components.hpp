@@ -7,3 +7,4 @@
 #include "collisionbox.hpp"
 #include "staticbody.hpp"
 #include "characterbody.hpp"
+#include "audioplayer.hpp"

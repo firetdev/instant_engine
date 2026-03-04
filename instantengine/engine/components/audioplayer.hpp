@@ -8,17 +8,19 @@
 
 struct AudioPlayer : public BaseComponent {
 private:
-    sf::Sound sound;
+    std::unique_ptr<sf::Sound> sound;
     std::shared_ptr<sf::SoundBuffer> buffer;
 
 public:
-    float volume = 100.0f;  // Range: 0 - 100
-    float pitch = 1.0f;  // Also affects speed
+    float volume = 100.0f;
+    float pitch = 1.0f;
     bool looping = false;
 
-    AudioPlayer(const std::string& filepath) {
+    AudioPlayer(const std::string& filepath)
+        : sound(nullptr), buffer(nullptr)
+    {
         if (!load(filepath))
-            std::cout << "AudioPlayer failed to initialize" << std::endl;
+            std::cout << "AudioPlayer failed to initialize: " << filepath << std::endl;
     }
 
     bool load(const std::string& filepath) {
@@ -27,27 +29,32 @@ public:
         if (!buffer->loadFromFile(filepath))
             return false;
 
-        sound.setBuffer(*buffer);
+        sound = std::make_unique<sf::Sound>(*buffer);
+        
         applyProperties();
         return true;
     }
 
     void applyProperties() {
-        sound.setVolume(volume);
-        sound.setPitch(pitch);
-        sound.setLooping(looping);
+        if (sound) {
+            sound->setVolume(volume);
+            sound->setPitch(pitch);
+            sound->setLooping(looping);
+        }
     }
 
     void play() {
-        applyProperties();
-        sound.play();
+        if (sound) {
+            applyProperties();
+            sound->play();
+        }
     }
 
     void stop() {
-        sound.stop();
+        if (sound) sound->stop();
     }
 
     bool isPlaying() const {
-        return sound.getStatus() == sf::Sound::Status::Playing;
+        return (sound) ? (sound->getStatus() == sf::Sound::Status::Playing) : false;
     }
 };
